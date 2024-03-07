@@ -1,13 +1,24 @@
-import React from 'react'
+
+import useLogout from "../../hooks/useLogout";
 
 const LogoutButton = () => {
-  return (
-    <div className='mt-auto '>
-<button className="btn btn-active btn-neutral">
-    Logout
-</button>
-    </div>
-  )
-}
+	const { loading, logout } = useLogout();
 
-export default LogoutButton
+	return (
+		<div className='mt-auto'>
+			{!loading ? (
+			   <button 
+         className="btn btn-active btn-neutral"
+         onClick={logout}
+   >
+     Logout
+   </button>
+			) : (
+				<span  className="btn btn-active btn-neutral">
+					Logging out
+				</span>
+			)}
+		</div>
+	);
+};
+export default LogoutButton;

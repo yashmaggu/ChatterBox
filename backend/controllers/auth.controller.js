@@ -4,10 +4,11 @@ import generateTokenAndSetCookie from "../utils/generateToken.js";
 
 
 // signup function
-export const signUp=async(req,res)=>{
+export const signUp=async(req,res)=>{  
     try{
+        //field we need at time of signup
         const {fullName,username,password,confirmPassword,gender}=req.body;
-
+        
         //password and cxonfirmpassword must be same
         if(password !== confirmPassword){
             return res.status(400).json({error:"Passwords doesnt match "});
@@ -70,16 +71,16 @@ export const login = async (req, res) => {
         
         // Find the existing user by username
         const existingUser = await User.findOne({ username });
-        if(existingUser){
-            console.log("found existing user");
-        }
-
-        if(!existingUser){
-            res.status(400).json({ error: "Invalid request user doesnt exist" });
-        }
+        
+        //password same or not
         if(password !== existingUser.password){
-            res.status(400).json({error:"Password does not match"})
+            res.status(400).json({ error:"Password doesnot match"});
         }
+        
+        if(!existingUser ) {
+            res.status(400).json({ error: "Invalid username" });
+        }
+        
         // Set cookies (assuming generateTokenAndSetCookie is defined)
         generateTokenAndSetCookie(existingUser._id, res);
 

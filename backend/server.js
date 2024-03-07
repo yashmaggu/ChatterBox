@@ -1,5 +1,5 @@
+import cors from 'cors'
 import  express  from 'express';
-const app=express();
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -12,11 +12,18 @@ import userRoutes from './Routes/user.Routes.js';
 import connecttomongo from './db/connecttomongo.js';
 import cookieParser from 'cookie-parser';
 
+import { app ,server}  from './socket/socket.js'
 const PORT=8000;
 
 
+app.use(cors({
+         origin:process.env.CORS_ORIGIN,
+         credentials:true
+}))
 app.use(express.json());
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/",(req,resp)=>{
 resp.send("Server is ready")
 })
@@ -27,7 +34,7 @@ app.use("/api/messages",messageRoutes);
 app.use("/api/user",userRoutes);
 
 
-app.listen(PORT,()=>{
+server.listen(PORT,()=>{
     connecttomongo();
     console.log(`Your port is listening at port ${PORT}`);
 })
